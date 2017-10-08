@@ -3,10 +3,9 @@ class HomeController < ActionController::Base
 
   layout 'application'
 
-  def index
-  end
+  def index; end
 
   def raise_exception
-    raise "This exception is generated for error log testing"
+    raise 'This exception is generated for error log testing'
   end
 end
