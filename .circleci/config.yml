@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-       - image: circleci/ruby:2.4.1-node-browsers
+       - image: circleci/ruby:2.4.2-node-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -18,12 +18,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Install Docker Compose
-          command: |
-            set -x
-            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - setup_remote_docker
 
       # Download and cache dependencies
@@ -46,14 +40,12 @@ jobs:
       # Database setup
       - run: docker-compose build
 
+      - run: docker-compose run web rake db:create
+
       # run tests!
       - run:
           name: run tests
-          command: |
-            mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
-
-            docker-compose run web bundle exec rake test
+          command: docker-compose run web rails test
 
       # collect reports
       - store_test_results:
