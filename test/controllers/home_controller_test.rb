@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
-  test '#index returns a 200 response' do
+  test '#index returns a 500 response' do
     get '/'
-    assert_response 200
+    assert_response 500
   end
 
   test '#raise_exception raises an exception and returns 500 response' do
